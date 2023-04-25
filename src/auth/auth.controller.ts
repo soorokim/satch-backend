@@ -16,7 +16,10 @@ export class AuthController {
   }
 
   @Get('refresh')
-  async refresh(@Req() req, @Res({ passthrough: true }) res): Promise<string> {
+  async refresh(
+    @Req() req,
+    @Res({ passthrough: true }) res,
+  ): Promise<AuthResponseDto> {
     return this.authService.refresh(req, res);
   }
 }

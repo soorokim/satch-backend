@@ -8,11 +8,12 @@ import { UserService } from 'src/user/user.service';
 import { AuthRequestDto } from './dto/auth-request.dto';
 import { AuthResponseDto } from './dto/auth-response.dto';
 import {
+  InvalidTokenException,
   InvalidVendorNameException,
   KakaoOAuthFailedException,
 } from 'errors/auth.errors';
 import { Request, Response } from 'express';
-import { config } from 'process';
+import * as dayjs from 'dayjs';
 
 const ACCESS_TOKEN_EXPIRE = 36000;
 const JwtSubjectType = {
@@ -30,7 +31,6 @@ export class AuthService {
   async login(data: AuthRequestDto, res: Response): Promise<AuthResponseDto> {
     let userId;
 
-    console.log(data);
     switch (data.vendor) {
       case 'kakao': {
         userId = await this.getUserByKakaoAccessToken(data.accessToken);
@@ -57,10 +57,29 @@ export class AuthService {
   }
 
   async refresh(req: Request, res: Response) {
-    // console.log(req);
-    console.log(req.headers.cookie);
-    console.log(req.cookies?.refresh_token);
-    return 'cool';
+    const token = this.getRefreshTokenByCookie(req.headers.cookie);
+    const userId = await this.getUserIdByRefreshToken(token);
+    if (!userId) {
+      throw new InvalidTokenException();
+    }
+    const [accessToken, refreshToken] = await Promise.all([
+      this.generateAccessToken(userId),
+      this.generateRefreshToken(userId),
+    ]);
+
+    res.cookie('refresh_token', refreshToken, {
+      path: '/auth',
+      httpOnly: true,
+      sameSite: 'strict',
+    });
+
+    return new AuthResponseDto(accessToken);
+  }
+
+  getRefreshTokenByCookie(cookie: string) {
+    return new Map<string, string>(
+      cookie.split('; ').map((t) => t.split('=')) as [[string, string]],
+    ).get('refresh_token');
   }
 
   async getUserByKakaoAccessToken(accessToken: string): Promise<string> {
@@ -99,5 +118,18 @@ export class AuthService {
       },
       { expiresIn: ACCESS_TOKEN_EXPIRE, subject: JwtSubjectType.ACCESS },
     );
+  }
+
+  protected async getUserIdByRefreshToken(token: string) {
+    try {
+      const result = await this.jwtService.verifyAsync(token);
+      if (result) {
+        const isValidToken = dayjs(result.exp).isBefore(dayjs());
+        if (isValidToken) return result.user_id;
+        return false;
+      }
+    } catch {
+      return false;
+    }
   }
 }

@@ -11,3 +11,9 @@ export class InvalidVendorNameException extends HttpException {
     super('Invalid OAuth vendor!', HttpStatus.EXPECTATION_FAILED);
   }
 }
+
+export class InvalidTokenException extends HttpException {
+  constructor() {
+    super('Invalid Token!', HttpStatus.UNAUTHORIZED);
+  }
+}
