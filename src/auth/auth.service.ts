@@ -11,7 +11,7 @@ import {
   InvalidTokenException,
   InvalidVendorNameException,
   KakaoOAuthFailedException,
-} from 'errors/auth.errors';
+} from 'src/errors/auth.errors';
 import { Request, Response } from 'express';
 import * as dayjs from 'dayjs';
 
