@@ -47,7 +47,7 @@ export class AuthService {
     ]);
 
     res.cookie('refresh_token', refreshToken, {
-      path: '/auth',
+      path: '/',
       httpOnly: true,
       secure: true,
       sameSite: 'strict',
@@ -68,7 +68,7 @@ export class AuthService {
     ]);
 
     res.cookie('refresh_token', refreshToken, {
-      path: '/auth',
+      path: '/',
       httpOnly: true,
       sameSite: 'strict',
       secure: true,
