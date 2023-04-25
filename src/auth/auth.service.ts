@@ -49,8 +49,8 @@ export class AuthService {
     res.cookie('refresh_token', refreshToken, {
       path: '/auth',
       httpOnly: true,
-      sameSite: 'none',
       secure: true,
+      sameSite: 'strict',
     });
 
     return new AuthResponseDto(accessToken);
@@ -71,6 +71,7 @@ export class AuthService {
       path: '/auth',
       httpOnly: true,
       sameSite: 'strict',
+      secure: true,
     });
 
     return new AuthResponseDto(accessToken);

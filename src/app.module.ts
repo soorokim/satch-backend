@@ -11,7 +11,7 @@ import { FirestoreModule } from './firestore/firestore.module';
     AuthModule,
     UserModule,
     ConfigModule.forRoot({
-      envFilePath: ['.env.development.local'],
+      envFilePath: ['.env.production'],
       isGlobal: true,
     }),
     FirestoreModule.forRoot({
