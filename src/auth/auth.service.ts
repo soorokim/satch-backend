@@ -19,6 +19,7 @@ const ACCESS_TOKEN_EXPIRE = 36000;
 const JwtSubjectType = {
   ACCESS: 'access',
 };
+
 const cookieOptions = (env: string): CookieOptions =>
   env === 'production'
     ? {
@@ -88,6 +89,7 @@ export class AuthService {
   }
 
   getRefreshTokenByCookie(cookie: string) {
+    if (!cookie) throw new InvalidTokenException();
     return new Map<string, string>(
       cookie.split('; ').map((t) => t.split('=')) as [[string, string]],
     ).get('refresh_token');
@@ -131,7 +133,7 @@ export class AuthService {
     );
   }
 
-  protected async getUserIdByRefreshToken(token: string) {
+  async getUserIdByRefreshToken(token: string) {
     try {
       const result = await this.jwtService.verifyAsync(token);
       if (result) {

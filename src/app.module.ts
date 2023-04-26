@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { FirestoreModule } from './firestore/firestore.module';
+import { GoalsModule } from './goals/goals.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { FirestoreModule } from './firestore/firestore.module';
       }),
       inject: [ConfigService],
     }),
+    GoalsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
