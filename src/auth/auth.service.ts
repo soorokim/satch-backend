@@ -12,14 +12,25 @@ import {
   InvalidVendorNameException,
   KakaoOAuthFailedException,
 } from 'src/errors/auth.errors';
-import { Request, Response } from 'express';
+import { CookieOptions, Request, Response } from 'express';
 import * as dayjs from 'dayjs';
 
 const ACCESS_TOKEN_EXPIRE = 36000;
 const JwtSubjectType = {
   ACCESS: 'access',
 };
-
+const cookieOptions = (env: string): CookieOptions =>
+  env === 'production'
+    ? {
+        path: '/',
+        httpOnly: true,
+        sameSite: 'strict',
+        secure: true,
+      }
+    : {
+        path: '/',
+        httpOnly: true,
+      };
 @Injectable()
 export class AuthService {
   constructor(
@@ -46,12 +57,11 @@ export class AuthService {
       this.generateRefreshToken(userId),
     ]);
 
-    res.cookie('refresh_token', refreshToken, {
-      path: '/',
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-    });
+    res.cookie(
+      'refresh_token',
+      refreshToken,
+      cookieOptions(await this.configService.get('NODE_ENV')),
+    );
 
     return new AuthResponseDto(accessToken);
   }
