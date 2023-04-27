@@ -21,7 +21,6 @@ import { Request } from 'express';
 
 /**
  *  TODO:
- *  1. userId를 받을 필요가 없다. accessToken확인 하면된다!
  *  2. goals Collection을 사용하고 싶은데 이거 계속해서 UserCollection을 사용해야한다.
  * */
 

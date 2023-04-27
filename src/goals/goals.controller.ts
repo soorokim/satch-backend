@@ -32,7 +32,6 @@ export class GoalsController {
 
   @Get()
   findOne(@Req() req) {
-    console.log('hi');
     return this.goalsService.findOne(req);
   }
 

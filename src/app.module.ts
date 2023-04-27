@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { FirestoreModule } from './firestore/firestore.module';
 import { GoalsModule } from './goals/goals.module';
+import { SatchsModule } from './satchs/satchs.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { GoalsModule } from './goals/goals.module';
       inject: [ConfigService],
     }),
     GoalsModule,
+    SatchsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
