@@ -66,9 +66,24 @@ export class GoalsService {
       res = { id: doc.id, ...doc.data() };
     });
 
+    const satchsRef = this.usersCollection
+      .doc(`${userId}`)
+      .collection(`goals`)
+      .doc(res.id)
+      .collection('satchs');
+
+    const satchListnapshot = await satchsRef.get();
+    const satchList = [];
+
+    satchListnapshot.forEach((doc) => {
+      const data = doc.data();
+      satchList.push({ id: doc.id, ...data, date: dayjs(data.date.toDate()) });
+    });
+
     return {
       ...res,
       created_at: dayjs(res.created_at.toDate()),
+      satchList,
     };
   }
 
