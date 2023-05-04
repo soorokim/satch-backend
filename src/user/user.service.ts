@@ -33,7 +33,6 @@ export class UserService {
     const ref = this.usersCollection.doc(`${id}`);
     const user = await ref.get();
     const data = user.data();
-    if (data) console.log(data);
 
     return data;
   }

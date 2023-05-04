@@ -104,7 +104,6 @@ export class AuthService {
 
     const user = await this.userService.findOne(userOfKakao.data.id);
     if (!user) {
-      console.log('create User!');
       return this.userService.create({
         id: userOfKakao.data.id,
         created_at: userOfKakao.data.connected_at,

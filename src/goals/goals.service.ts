@@ -8,17 +8,6 @@ import { UsersDocument } from 'src/firestore/documents/users';
 import { AuthService } from 'src/auth/auth.service';
 import { Request } from 'express';
 
-// interface Goal {
-//   id: number; // 식별
-//   emoticon: string; // 이모티콘
-//   name: string; // 맥북 미국여행
-//   price: number; // 골의 목표 금액
-//   percent: number; // 달성률
-//   createdAt: Date; // 언제시작
-//   endedAt?: Date; // 언제 달성했어?
-//   satchList: Satch[]; // 이 골을 달성하기 위해서 어떤 아이템들을 갖고있어?
-// }
-
 /**
  *  TODO:
  *  2. goals Collection을 사용하고 싶은데 이거 계속해서 UserCollection을 사용해야한다.
@@ -27,8 +16,6 @@ import { Request } from 'express';
 @Injectable()
 export class GoalsService {
   constructor(
-    // @Inject(GoalsDocument.collectionName)
-    // private goalsCollection: CollectionReference<GoalsDocument>,
     @Inject(UsersDocument.collectionName)
     private usersCollection: CollectionReference<UsersDocument>,
     private authService: AuthService,

@@ -18,14 +18,12 @@ export class SatchsService {
     const token = this.authService.getRefreshTokenByCookie(req.headers.cookie);
     const userId = await this.authService.getUserIdByRefreshToken(token);
 
-    console.log('hi');
     const ref = this.usersCollection
       .doc(`${userId}`)
       .collection(`goals`)
       .doc(goalId)
       .collection('satchs');
 
-    console.log(createSatchDto);
     const response = await ref.add({
       name: createSatchDto.name,
       price: createSatchDto.price, // 골의 목표 금액
