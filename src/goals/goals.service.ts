@@ -72,7 +72,7 @@ export class GoalsService {
       .doc(res.id)
       .collection('satchs');
 
-    const satchListnapshot = await satchsRef.orderBy('date', 'desc').get();
+    const satchListnapshot = await satchsRef.get();
     const satchList = [];
 
     satchListnapshot.forEach((doc) => {
