@@ -27,6 +27,11 @@ export class SatchsController {
     return this.satchsService.create(goalId, createSatchDto, req);
   }
 
+  @Get(':goalId')
+  findAll(@Param('goalId') goalId: string, @Req() req: Request) {
+    return this.satchsService.list(goalId, req);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateSatchDto: UpdateSatchDto) {
     return this.satchsService.update(+id, updateSatchDto);

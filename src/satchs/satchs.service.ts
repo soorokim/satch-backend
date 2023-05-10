@@ -33,6 +33,29 @@ export class SatchsService {
     return response.id;
   }
 
+  async list(goalId: string, req: Request) {
+    const token = this.authService.getRefreshTokenByCookie(req.headers.cookie);
+    const userId = await this.authService.getUserIdByRefreshToken(token);
+
+    const ref = this.usersCollection
+      .doc(`${userId}`)
+      .collection(`goals`)
+      .doc(`${goalId}`)
+      .collection('satchs');
+
+    const snapshot = await ref.get();
+    const res = [];
+
+    snapshot.forEach((doc) => {
+      const data = doc.data();
+      res.push({ id: doc.id, ...data, date: dayjs(data.date.toDate()) });
+    });
+    return {
+      success: true,
+      data: res,
+    };
+  }
+
   update(id: number, updateSatchDto: UpdateSatchDto) {
     return `This action updates a #${id} satch`;
   }
