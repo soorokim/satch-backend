@@ -78,12 +78,11 @@ export class AuthService {
       this.generateRefreshToken(userId),
     ]);
 
-    res.cookie('refresh_token', refreshToken, {
-      path: '/',
-      httpOnly: true,
-      sameSite: 'strict',
-      secure: true,
-    });
+    res.cookie(
+      'refresh_token',
+      refreshToken,
+      cookieOptions(await this.configService.get('NODE_ENV')),
+    );
 
     return new AuthResponseDto(accessToken);
   }

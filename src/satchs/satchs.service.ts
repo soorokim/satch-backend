@@ -50,10 +50,7 @@ export class SatchsService {
       const data = doc.data();
       res.push({ id: doc.id, ...data, date: dayjs(data.date.toDate()) });
     });
-    return {
-      success: true,
-      data: res,
-    };
+    return res;
   }
 
   update(id: number, updateSatchDto: UpdateSatchDto) {
@@ -72,6 +69,6 @@ export class SatchsService {
       .doc(id);
     await ref.delete();
 
-    return 200;
+    return true;
   }
 }
